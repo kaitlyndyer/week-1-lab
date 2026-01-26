@@ -18,11 +18,46 @@ def personality_mapping(villagers: dict[str, str]) -> dict[str, list[str]]:
     Returns:
         Dictionary mapping personality type to sorted list of villager names
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    types = {}
+    for k, v in villagers.items():
+        if v in types:
+            types[v].append(k)
+        else:
+            types[v] = [k]
+    return types
 
 
+def test_personality_mapping_basic():
+    dic = {
+        "Maple": "Normal", 
+        "Raymond": "Smug", 
+        "Sherb": "Lazy"
+        }
+    assert personality_mapping(dic) == {
+        "Normal": ["Maple"], 
+        "Smug": ["Raymond"], 
+        "Lazy": ["Sherb"]
+    }
+
+def test_personality_mapping_overlap():
+    dic = {
+        "Maple": "Normal", 
+        "Raymond": "Smug", 
+        "Sherb": "Normal",
+        "Katie": "Normal"
+        }
+    assert personality_mapping(dic) == {
+        "Normal": ["Maple", "Sherb", "Katie"], 
+        "Smug": ["Raymond"]
+    }
+
+def test_personality_mapping_single():
+    dic = {
+        "Maple": "Normal"
+        }
+    assert personality_mapping(dic) == {
+        "Normal": ["Maple"]
+    }
 # YOUR TESTS HERE (BONUS)
 # Write at least 3 tests for invert_personality_mapping
 # Test function names must start with "test_"

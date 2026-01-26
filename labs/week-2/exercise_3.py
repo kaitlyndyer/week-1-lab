@@ -37,3 +37,51 @@ def find_common_and_unique(set_a: set[str], set_b: set[str]) -> dict[str, set[st
 # YOUR TESTS HERE
 # Write at least 5 tests for find_common_and_unique
 # Test function names must start with "test_"
+def test_find_common_and_unique_basic():
+    a = {'red', 'orange', 'yellow'}
+    b = {'green', 'blue', 'red'}
+    assert find_common_and_unique(a, b) == {
+        'common': {'red'},
+        'only_a': {'orange', 'yellow'},
+        'only_b': {'green', 'blue'}
+    }
+
+def test_find_common_and_unique_no_overlap():
+    a = {'red', 'orange', 'yellow'}
+    b = {'green', 'blue', 'purple'}
+    assert find_common_and_unique(a, b) == {
+        'common': set(),
+        'only_a': {'red', 'orange', 'yellow'},
+        'only_b': {'green', 'blue', 'purple'}
+    }
+
+def test_find_common_and_unique_complete_overlap():
+    a = {'red', 'orange', 'yellow'}
+    b = {'red', 'orange', 'yellow'}
+    assert find_common_and_unique(a, b) == {
+        'common': {'red', 'orange', 'yellow'},
+        'only_a': set(),
+        'only_b': set()
+    }
+
+
+def test_find_common_and_unique_empty_sets():
+    a = set()
+    b = {'red'}
+    assert find_common_and_unique(a, b) == {
+        'common': set(),
+        'only_a': set(),
+        'only_b': {'red'}
+    }
+
+def test_find_common_and_unique_subset_relationships():
+    a = {'red', 'orange'}
+    b = {'red', 'orange', 'yellow', 'green'}
+    assert find_common_and_unique(a, b) == {
+        'common': {'red', 'orange'},
+        'only_a': set(),
+        'only_b': {'yellow', 'green'}
+    }
+
+
+

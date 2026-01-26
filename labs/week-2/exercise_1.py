@@ -21,9 +21,13 @@ def process_game_ratings(ratings: list[int]) -> list[int]:
     Returns:
         Sorted list of valid ratings in ascending order
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    ratings.sort()
+    valid = []
+    for r in ratings:
+        if 1 <= r <= 10:
+            valid.append(r)
+    return valid
+    
 
 
 def test_process_game_ratings_basic():

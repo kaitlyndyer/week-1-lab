@@ -19,9 +19,11 @@ def get_high_performers(participants: list[tuple[str, int, str]]) -> list[str]:
     Returns:
         List of names of high-performing participants
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    high_preform = []
+    for n, p, c in participants:
+        if p > 75:
+            high_preform.append(n)
+    return high_preform
 
 
 def test_get_high_performers_all_qualify():

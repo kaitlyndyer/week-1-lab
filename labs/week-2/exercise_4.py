@@ -19,9 +19,13 @@ def count_species(villagers: list[tuple[str, str]]) -> dict[str, int]:
     Returns:
         Dictionary mapping species to count of villagers
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    unique_species = {}
+    for n, s in villagers:
+        if s in unique_species:
+            unique_species[s] += 1
+        else:
+            unique_species[s] = 1
+    return unique_species
 
 
 def test_count_species_basic():
