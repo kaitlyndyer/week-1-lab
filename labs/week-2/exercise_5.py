@@ -28,36 +28,27 @@ def personality_mapping(villagers: dict[str, str]) -> dict[str, list[str]]:
 
 
 def test_personality_mapping_basic():
-    dic = {
-        "Maple": "Normal", 
-        "Raymond": "Smug", 
-        "Sherb": "Lazy"
-        }
+    dic = {"Maple": "Normal", "Raymond": "Smug", "Sherb": "Lazy"}
     assert personality_mapping(dic) == {
-        "Normal": ["Maple"], 
-        "Smug": ["Raymond"], 
-        "Lazy": ["Sherb"]
+        "Normal": ["Maple"],
+        "Smug": ["Raymond"],
+        "Lazy": ["Sherb"],
     }
+
 
 def test_personality_mapping_overlap():
-    dic = {
-        "Maple": "Normal", 
-        "Raymond": "Smug", 
-        "Sherb": "Normal",
-        "Katie": "Normal"
-        }
+    dic = {"Maple": "Normal", "Raymond": "Smug", "Sherb": "Normal", "Katie": "Normal"}
     assert personality_mapping(dic) == {
-        "Normal": ["Maple", "Sherb", "Katie"], 
-        "Smug": ["Raymond"]
+        "Normal": ["Maple", "Sherb", "Katie"],
+        "Smug": ["Raymond"],
     }
 
+
 def test_personality_mapping_single():
-    dic = {
-        "Maple": "Normal"
-        }
-    assert personality_mapping(dic) == {
-        "Normal": ["Maple"]
-    }
+    dic = {"Maple": "Normal"}
+    assert personality_mapping(dic) == {"Normal": ["Maple"]}
+
+
 # YOUR TESTS HERE (BONUS)
 # Write at least 3 tests for invert_personality_mapping
 # Test function names must start with "test_"

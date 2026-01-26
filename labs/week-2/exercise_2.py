@@ -30,7 +30,7 @@ def test_get_high_performers_all_qualify():
     participants = [
         ("Maple", 85, "Gold"),
         ("Raymond", 92, "Platinum"),
-        ("Sherb", 78, "Silver")
+        ("Sherb", 78, "Silver"),
     ]
     assert get_high_performers(participants) == ["Maple", "Raymond", "Sherb"]
 
@@ -40,16 +40,13 @@ def test_get_high_performers_mixed():
         ("Marina", 85, "Gold"),
         ("Ankha", 65, "Bronze"),
         ("Apollo", 88, "Platinum"),
-        ("Audie", 50, "Bronze")
+        ("Audie", 50, "Bronze"),
     ]
     assert get_high_performers(participants) == ["Marina", "Apollo"]
 
 
 def test_get_high_performers_boundary():
-    participants = [
-        ("Marshal", 76, "Silver"),
-        ("Judy", 75, "Bronze")
-    ]
+    participants = [("Marshal", 76, "Silver"), ("Judy", 75, "Bronze")]
     assert get_high_performers(participants) == ["Marshal"]
 
 
@@ -58,8 +55,5 @@ def test_get_high_performers_empty():
 
 
 def test_get_high_performers_none_qualify():
-    participants = [
-        ("Stitches", 70, "Bronze"),
-        ("Bob", 60, "Bronze")
-    ]
+    participants = [("Stitches", 70, "Bronze"), ("Bob", 60, "Bronze")]
     assert get_high_performers(participants) == []

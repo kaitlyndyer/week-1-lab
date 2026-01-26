@@ -27,7 +27,6 @@ def process_game_ratings(ratings: list[int]) -> list[int]:
         if 1 <= r <= 10:
             valid.append(r)
     return valid
-    
 
 
 def test_process_game_ratings_basic():
