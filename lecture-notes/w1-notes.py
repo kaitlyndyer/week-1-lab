@@ -105,9 +105,38 @@ def first[T](items: list[T]) -> T:
     return items[0]
 
 # TOOLS
+# Ruff linter: uv run ruff check filename.py --fix
+# Ruff formatter: uv run ruff formate filename.py
+# Type checker: uv run ty check
 
 # CONTROL FLOW: IF STATEMENTS
+# single selction
+
+# chained comparisons
+
+# double selection
+
+# multiple selection
+
+# guard clause pattern (avoid nested ifs)
 
 # CONTROL FLOW: LOOPS
+# While loop (unknown iterations)
+
+# Infinite loop with break
+
+# For loop (known iterations)
+
 
 # DEBUGGER (VS CODE)
+"""
+SETUP: Click line number for breakpoint (red dot)
+START: "Python Debugger: Debug Python File" or ⇧⌘D
+
+Controls:
+- Continue: Run until next breakpoint
+- Step Over: Execute line (don't enter functions)
+- Step into: Execute and enter functions
+- Step Out: retur to outer function
+- Restart/Stop: Restart or exit debugger
+"""
