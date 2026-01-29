@@ -1,11 +1,11 @@
 # Create LightSwitch class
 class LightSwitch:
-    def __init__(self, name, state: bool = False) -> None:
+    def __init__(self, name: str, state: bool = False) -> None:
         self.state = state
         self.name = name
     
     def __repr__(self) -> str:
-        return f'LightSwitch({self.name!r}): state={self.state}'
+        return f'LightSwitch(name="{self.name}", state={self.state})'
     
     def __str__(self) -> str:
         return f'{self.name} light is {"on" if self.state else "off"}'

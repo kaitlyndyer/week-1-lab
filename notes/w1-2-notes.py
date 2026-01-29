@@ -111,22 +111,61 @@ def first[T](items: list[T]) -> T:
 
 # CONTROL FLOW: IF STATEMENTS
 # single selction
+if x > 10:
+    print("Greater than 10")
 
 # chained comparisons
+if 1 <= x <= 5:
+    print("Between 1 and 5")
 
 # double selection
+grade = 50
+if grade >= 50:
+    print("pass")
+else: 
+    print("Fail")
 
 # multiple selection
+mark = 61
+if mark >= 72:
+    print("Distinction")
+elif mark >= 62:
+    print("Merit")
+else:
+    print("Pass or Fail")
 
 # guard clause pattern (avoid nested ifs)
+def grade(mark: int) -> str:
+    if mark >= 72:
+        return "Distinction"
+    if mark >= 62:
+        return "Merit"
+    if mark >= 52:
+        return "Pass"
+    return "Fail"
 
 # CONTROL FLOW: LOOPS
 # While loop (unknown iterations)
+i = 10
+while i > 0:
+    print(i)
+    i -= 1
 
 # Infinite loop with break
+while True:
+    choice = input("Exit? (y/n): ")
+    if choice == "y":
+        break
 
 # For loop (known iterations)
+for char in "Python":
+    print(char)
 
+for x in range(5):
+    print(x)
+
+# continue: skip current iteration
+# break: exit loop entirely
 
 # DEBUGGER (VS CODE)
 """
