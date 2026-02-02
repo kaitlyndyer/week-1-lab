@@ -11,28 +11,38 @@ class Trainer:
 
     def __init__(self, name: str) -> None:
         """Initialise a new Trainer."""
+        self.name = name
+        self.team = []
         self.max_team_size = 6
-        pass
 
     def add_to_team(self, pokemon: Pokemon) -> bool:
         """Add a Pokemon to the trainer's team.
 
         Returns True if successful, False if team is full.
         """
-        pass
+        if len(self.team) < 6:
+            self.team.append(pokemon)
+            return True
+        else:
+            return False
 
     def get_team_size(self) -> int:
         """Get the number of Pokemon in the team."""
-        pass
+        return len(self.team)
 
     def get_first_available(self) -> Pokemon | None:
         """Get the first non-fainted Pokemon in the team."""
-        pass
+        for pokemon in self.team:
+            if not pokemon.is_fainted():
+                return pokemon
+        return None
+
 
     def get_pokemon_by_type(self, pokemon_type: type) -> list[Pokemon]:
         """Get a list of all Pokemon in the team that are instances of pokemon_type."""
-        pass
+        return [pokemon.name for pokemon in self.team if isinstance(pokemon, pokemon_type)]
 
     def __str__(self) -> str:
         """Return a string representation of this Trainer."""
-        pass
+        return f'{self.name} ({len(self.team)}/6 Pokemon)'
+

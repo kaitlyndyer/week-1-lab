@@ -17,8 +17,13 @@ class Pokemon:
         move: str,
         move_power: int,
     ) -> None:
-        """Initialise a new Pokemon."""
-        pass
+        self.name = name
+        self.max_hp = max_hp
+        self.current_hp = max_hp
+        self.attack = attack
+        self.defence = defence
+        self.move = move
+        self.move_power = move_power
 
     def take_damage(self, amount: int) -> None:
         """Reduce current_hp by amount (minimum 0)."""
@@ -36,19 +41,22 @@ class Pokemon:
 
     def is_fainted(self) -> bool:
         """Check if the Pokemon has fainted."""
-        pass
+        if self.current_hp == 0:
+            return True
+        else:
+            return False
 
     def attack_move(self) -> str:
         """Return the attack message for this Pokemon."""
-        pass
+        return f'{self.name} uses {self.move}!'
 
     def description(self) -> str:
         """Return a description of this Pokemon."""
-        pass
+        return f'{self.name} is a Normal type'
 
     def __str__(self) -> str:
         """Return a string representation of this Pokemon."""
-        pass
+        return f'{self.name} ({self.current_hp}/{self.max_hp}) HP'
 
 
 class FireType(Pokemon):
@@ -64,12 +72,12 @@ class FireType(Pokemon):
         move_power: int,
         burn_chance: float,
     ) -> None:
-        """Initialise a new Fire type Pokemon."""
-        pass
+        super().__init__(name, max_hp, attack, defence, move, move_power)
+        self.burn_chance = burn_chance
 
     def description(self) -> str:
         """Return a description of this Fire type Pokemon."""
-        pass
+        return f'{self.name} is a Fire type with {self.burn_chance}% burn chance'
 
 
 class WaterType(Pokemon):
@@ -85,9 +93,11 @@ class WaterType(Pokemon):
         move_power: int,
         swim_speed: int,
     ) -> None:
-        """Initialise a new Water type Pokemon."""
-        pass
+        super().__init__(name, max_hp, attack, defence, move, move_power)
+        self.swim_speed = swim_speed
 
     def description(self) -> str:
         """Return a description of this Water type Pokemon."""
-        pass
+        return f'{self.name} is a Water type with swim speed {self.swim_speed}'\
+        
+
