@@ -40,28 +40,37 @@ Control Flow:
 - break and continue
 - Gaurd clause pattern
 """
+
+
 # FUNCTIONS
 # Default parameters (must be rightmost)
 def area(width: int, height: int = 3) -> int:
     """calculate rectangle area"""
     return width * height
 
-print(area(2))                 # 6
-print(area(4, 4))              # 16
-print(area(height=1, width=9)) # 9
+
+print(area(2))  # 6
+print(area(4, 4))  # 16
+print(area(height=1, width=9))  # 9
+
 
 def average(*numbers: int) -> float:
     """calculate average of any number of values"""
     return sum(numbers) / len(numbers)
 
-print(average(12, 45, 15, 22)) # 23.5
+
+print(average(12, 45, 15, 22))  # 23.5
+
+
 # IF __NAME__ == "__MAIN__"
 # Run code only when executed directly (not when imported)
 def main():
     print("Hello World!")
 
+
 if __name__ == "__main__":
     main()
+
 
 # TESTING WITH PYTEST
 # Run: uv run pytest filename.py
@@ -69,9 +78,11 @@ if __name__ == "__main__":
 def inc(x: int) -> int:
     return x + 1
 
+
 def test_inc():
     assert inc(3) == 4
     assert inc(0) == 1
+
 
 # TYPE ANNOTATIONS
 # Basic types
@@ -91,18 +102,23 @@ optional: str | None = "something"
 
 # Any type (must import)
 from typing import Any
+
 unknown: Any = "anything"
+
 
 # Function annotations
 def add(a: int, b: int) -> int:
     return a + b
 
-def say_hello() -> None: # Returns nothing
+
+def say_hello() -> None:  # Returns nothing
     print("Hello!")
+
 
 # Generics (T = type variable)
 def first[T](items: list[T]) -> T:
     return items[0]
+
 
 # TOOLS
 # Ruff linter: uv run ruff check filename.py --fix
@@ -122,7 +138,7 @@ if 1 <= x <= 5:
 grade = 50
 if grade >= 50:
     print("pass")
-else: 
+else:
     print("Fail")
 
 # multiple selection
@@ -134,6 +150,7 @@ elif mark >= 62:
 else:
     print("Pass or Fail")
 
+
 # guard clause pattern (avoid nested ifs)
 def grade(mark: int) -> str:
     if mark >= 72:
@@ -143,6 +160,7 @@ def grade(mark: int) -> str:
     if mark >= 52:
         return "Pass"
     return "Fail"
+
 
 # CONTROL FLOW: LOOPS
 # While loop (unknown iterations)

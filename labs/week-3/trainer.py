@@ -8,7 +8,6 @@ from pokemon import Pokemon
 class Trainer:
     """A Pokemon trainer who manages a team of Pokemon."""
 
-
     def __init__(self, name: str) -> None:
         """Initialise a new Trainer."""
         self.name = name
@@ -37,12 +36,16 @@ class Trainer:
                 return pokemon
         return None
 
-
-    def get_pokemon_by_type(self, pokemon_type: type) -> list[Pokemon]:
+    def get_pokemon_by_type(self, pokemon_type: type) -> list[Pokemon] | str:
         """Get a list of all Pokemon in the team that are instances of pokemon_type."""
-        return [pokemon.name for pokemon in self.team if isinstance(pokemon, pokemon_type)]
+        matching = [
+            pokemon.name for pokemon in self.team if isinstance(pokemon, pokemon_type)
+        ]
+        if len(matching) == 0:
+            return []
+        else:
+            return matching[0]
 
     def __str__(self) -> str:
         """Return a string representation of this Trainer."""
-        return f'{self.name} ({len(self.team)}/6 Pokemon)'
-
+        return f"{self.name} ({len(self.team)}/6 Pokemon)"

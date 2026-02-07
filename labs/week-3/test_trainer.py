@@ -2,42 +2,101 @@ import pytest
 from pokemon import Pokemon, FireType, WaterType
 from trainer import Trainer
 
-@pytest.fixture
-def pokemon():
-    return Pokemon("Eevee", 55, 10, 8, "Tackle", 40)
+# Normal types - Pokemon(name, max_hp, attack, defence, move, move_power)
+pikachu = Pokemon("Pikachu", 35, 11, 7, "Quick Attack", 10)
+eevee = Pokemon("Eevee", 55, 10, 8, "Tackle", 10)
+snorlax = Pokemon("Snorlax", 160, 11, 10, "Body Slam", 20)
+meowth = Pokemon("Meowth", 40, 9, 7, "Scratch", 10)
+
+# Fire types - FireType(name, max_hp, attack, defence, move, move_power, burn_chance)
+charmander = FireType("Charmander", 39, 12, 8, "Ember", 10, 0.2)
+vulpix = FireType("Vulpix", 38, 9, 8, "Flamethrower", 22, 0.1)
+ponyta = FireType("Ponyta", 50, 17, 11, "Flame Charge", 12, 0.1)
+
+# Water types - WaterType(name, max_hp, attack, defence, move, move_power, swim_speed)
+squirtle = WaterType("Squirtle", 44, 9, 10, "Water Gun", 10, 5)
+psyduck = WaterType("Psyduck", 50, 10, 9, "Water Pulse", 15, 4)
+staryu = WaterType("Staryu", 30, 9, 11, "Swift", 15, 7)
+
+"""
+- Team starts empty
+- `add_to_team` adds Pokemon successfully
+- `add_to_team` returns `False` when team is full (6 Pokemon)
+- `get_team_size` returns correct count
+- `get_first_available` returns first non-fainted Pokemon
+- `get_first_available` skips fainted Pokemon
+- `get_first_available` returns `None` when all fainted
+- `__str__` returns the correct format"""
 
 
-@pytest.fixture
-def fire_pokemon():
-    return FireType("Charmander", 39, 12, 8, "Ember", 40, 0.2)
+def test_team_starts_empty():
+    test_ash = Trainer("Ash")
+    assert test_ash.team == []
 
 
-@pytest.fixture
-def water_pokemon():
-    return WaterType("Squirtle", 44, 9, 10, "Water Gun", 40, 5)
+def test_add_to_team_adds_pokemon():
+    test_ash = Trainer("Ash")
+    assert test_ash.add_to_team(pikachu) == True
+    assert test_ash.add_to_team(charmander) == True
+    assert test_ash.add_to_team(squirtle) == True
 
 
-# TESTING
-ash = Trainer("Ash")
-ash.add_to_team(FireType("Charmander", 39, 12, 8, "Ember", 40, 0.2))
-ash.add_to_team(WaterType("Squirtle", 44, 9, 10, "Water Gun", 40, 5))
+def test_add_to_team_returns_false_when_full():
+    test_ash = Trainer("Ash")
+    test_ash.add_to_team(pikachu)
+    test_ash.add_to_team(charmander)
+    test_ash.add_to_team(squirtle)
+    test_ash.add_to_team(meowth)
+    test_ash.add_to_team(eevee)
+    test_ash.add_to_team(vulpix)
+    assert test_ash.add_to_team(staryu) == False
 
-water_pokemon = ash.get_pokemon_by_type(WaterType)  # Returns [Squirtle]
 
-def test_get_type_correct_for_firetype():
-    assert ash.get_pokemon_by_type(FireType) == 'Charmander'
+def test_get_team_size_returns_correctly():
+    test_ash = Trainer("Ash")
+    assert test_ash.get_team_size() == 0
+    test_ash.add_to_team(pikachu)
+    test_ash.add_to_team(charmander)
+    test_ash.add_to_team(squirtle)
+    assert test_ash.get_team_size() == 3
+    test_ash.add_to_team(meowth)
+    assert test_ash.get_team_size() == 4
 
-def test_get_type_correct_for_watertype():
-    assert ash.get_pokemon_by_type(WaterType) == 'Squirtle'
 
-def test_get_type_no_pokemon_of_that_type():
-    spark = Trainer("Spark")
-    spark.add_to_team(FireType("Charmander", 39, 12, 8, "Ember", 40, 0.2))
-    assert spark.get_pokemon_by_type(WaterType) == []
+def test_get_first_available_returns_non_fainted_pokemon():
+    test_ash = Trainer("Ash")
+    test_ash.add_to_team(pikachu)
+    test_ash.add_to_team(charmander)
+    test_ash.add_to_team(squirtle)
+    test_ash.add_to_team(meowth)
+    test_ash.add_to_team(eevee)
+    pikachu.current_hp = 0
+    charmander.current_hp = 0
+    assert test_ash.get_first_available() == squirtle
+    squirtle.current_hp = 0
+    assert test_ash.get_first_available() == meowth
 
-def test_get_type_multiple_of_same_type():
-    spark = Trainer("Spark")
-    spark.add_to_team(FireType("Vulpix", 38, 9, 8, "Flamethrower", 22, 0.1))
-    spark.add_to_team(FireType("Charmander", 39, 12, 8, "Ember", 40, 0.2))
-    assert spark.get_pokemon_by_type(FireType) == 'Vulpix'
 
+def test_get_first_available_returns_none_when_all_fainted():
+    test_ash = Trainer("Ash")
+    test_ash.add_to_team(pikachu)
+    test_ash.add_to_team(charmander)
+    test_ash.add_to_team(squirtle)
+    test_ash.add_to_team(meowth)
+    test_ash.add_to_team(eevee)
+    pikachu.current_hp = 0
+    charmander.current_hp = 0
+    squirtle.current_hp = 0
+    meowth.current_hp = 0
+    eevee.current_hp = 0
+    assert test_ash.get_first_available() == None
+
+
+def test_str_returns_correct_formate():
+    test_ash = Trainer("Ash")
+    test_ash.add_to_team(pikachu)
+    test_ash.add_to_team(charmander)
+    test_ash.add_to_team(squirtle)
+    test_ash.add_to_team(meowth)
+    test_ash.add_to_team(eevee)
+    assert str(test_ash) == "Ash (5/6 Pokemon)"

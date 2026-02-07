@@ -48,15 +48,15 @@ class Pokemon:
 
     def attack_move(self) -> str:
         """Return the attack message for this Pokemon."""
-        return f'{self.name} uses {self.move}!'
+        return f"{self.name} uses {self.move}!"
 
     def description(self) -> str:
         """Return a description of this Pokemon."""
-        return f'{self.name} is a Normal type'
+        return f"{self.name} is a Normal type"
 
     def __str__(self) -> str:
         """Return a string representation of this Pokemon."""
-        return f'{self.name} ({self.current_hp}/{self.max_hp}) HP'
+        return f"{self.name} ({self.current_hp}/{self.max_hp}) HP"
 
 
 class FireType(Pokemon):
@@ -77,7 +77,7 @@ class FireType(Pokemon):
 
     def description(self) -> str:
         """Return a description of this Fire type Pokemon."""
-        return f'{self.name} is a Fire type with {self.burn_chance}% burn chance'
+        return f"{self.name} is a Fire type with {self.burn_chance}% burn chance"
 
 
 class WaterType(Pokemon):
@@ -98,6 +98,4 @@ class WaterType(Pokemon):
 
     def description(self) -> str:
         """Return a description of this Water type Pokemon."""
-        return f'{self.name} is a Water type with swim speed {self.swim_speed}'\
-        
-
+        return f"{self.name} is a Water type with swim speed {self.swim_speed}"
