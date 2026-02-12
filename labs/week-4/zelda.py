@@ -58,6 +58,21 @@ class Inventory:
         """Add an item to the inventory."""
         self._items.append(item)
 
+    def __getitem__(self, index: int) -> Item:
+        """access item by the index"""
+        return self._items[index]
+    
+    def __setitem__(self, index: int, item: Item) -> None:
+        self._items[index] = item
+    
+    def __len__(self) -> int:
+        return len(self._items)
+    
+    def __iter__(self):
+        for item in self._items:
+            yield item
+
+
 
 class Dungeon:
     """A dungeon containing rooms."""
