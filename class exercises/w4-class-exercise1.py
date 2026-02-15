@@ -7,10 +7,11 @@ class Song:
 
     def play(self):
         self.played = True
-        print(f'Now playing: {self.title}')
+        print(f"Now playing: {self.title}")
 
     def __repr__(self) -> str:
-        return f'Song({self.title!r}, {self.artist!r})'
+        return f"Song({self.title!r}, {self.artist!r})"
+
 
 class Playlist:
     def __init__(self, name: str):
@@ -22,10 +23,10 @@ class Playlist:
 
     def __getitem__(self, index: int) -> Song:
         return self.songs[index]
-    
+
     def __len__(self) -> int:
         return len(self.songs)
-    
+
     def __iter__(self):
         for song in self.songs:
             yield song
@@ -37,16 +38,16 @@ class Playlist:
         elif isinstance(item, str):
             return any(song.title == item for song in self.songs)
         return False
-    
+
     def __bool__(self) -> bool:
         return any(song.played for song in self.songs)
-    
+
+
 playlist = Playlist("New Albums")
 playlist.add_song(Song("Track 1", "Artist A"))
 playlist.add_song(Song("Track 2", "Artist B"))
 
-print(bool(playlist))   # False
+print(bool(playlist))  # False
 
-playlist[0].play()      # Now playing: Track 1
-print(bool(playlist))   # True
-    
+playlist[0].play()  # Now playing: Track 1
+print(bool(playlist))  # True

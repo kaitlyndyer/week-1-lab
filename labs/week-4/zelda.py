@@ -11,11 +11,14 @@ class Item:
 
     def __repr__(self) -> str:
         return f"Item('{self.name}', value={self.value}, qty={self.quantity})"
-    
+
     def __eq__(self, other) -> bool:
         if not isinstance(other, Item):
             return False
         return self.name == other.name
+
+    def __hash__(self) -> int:
+        return hash(self.name)
 
 
 class Weapon:
@@ -36,6 +39,14 @@ class Weapon:
     def __repr__(self) -> str:
         return f"Weapon('{self.name}', dmg={self.damage}, dur={self.durability})"
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Weapon):
+            return False
+        return self.name == other.name
+
+    def __hash__(self) -> int:
+        return hash(self.name)
+
 
 class Enemy:
     """An enemy that Link can encounter."""
@@ -51,12 +62,12 @@ class Enemy:
 
     def __repr__(self) -> str:
         return f"Enemy('{self.name}', hp={self.health}, str={self.strength})"
-    
+
     def __eq__(self, other) -> bool:
         if not isinstance(other, Enemy):
             return NotImplemented
         return self.name == other.name
-    
+
     def __lt__(self, other) -> bool:
         if not isinstance(other, Enemy):
             return NotImplemented
@@ -76,13 +87,13 @@ class Inventory:
     def __getitem__(self, index: int) -> Item:
         """access item by the index"""
         return self._items[index]
-    
+
     def __setitem__(self, index: int, item: Item) -> None:
         self._items[index] = item
-    
+
     def __len__(self) -> int:
         return len(self._items)
-    
+
     def __iter__(self):
         for item in self._items:
             yield item
@@ -101,10 +112,6 @@ class Inventory:
         elif isinstance(search, Item):
             return search in self._items
         return False
-        
-
-
-
 
 
 class Dungeon:
@@ -117,6 +124,31 @@ class Dungeon:
     def add_room(self, room: "Room") -> None:
         """Add a room to the dungeon."""
         self._rooms.append(room)
+
+    def __getitem__(self, index: int) -> Room:
+        return self._rooms[index]
+
+    def __len__(self) -> int:
+        return len(self._rooms)
+
+    def __iter__(self):
+        for room in self._rooms:
+            yield room
+
+    def __contains__(self, search) -> bool:
+        if isinstance(search, str):
+            for room in self._rooms:
+                if room.name == search:
+                    return True
+            return False
+        elif isinstance(self, Room):
+            return search in self._rooms
+        return False
+
+    def iter_uncleared(self):
+        for room in self._rooms:
+            if not room.cleared:
+                yield room
 
 
 class Room:
@@ -140,6 +172,12 @@ class Room:
     def add_item(self, item: Item) -> None:
         """Add an item to the room."""
         self._items.append(item)
+
+    def __bool__(self) -> bool:
+        if self.cleared == False:
+            return len(self._enemies) > 0
+        elif self.cleared == True:
+            return False
 
 
 if __name__ == "__main__":
