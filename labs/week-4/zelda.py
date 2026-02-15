@@ -11,6 +11,11 @@ class Item:
 
     def __repr__(self) -> str:
         return f"Item('{self.name}', value={self.value}, qty={self.quantity})"
+    
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Item):
+            return False
+        return self.name == other.name
 
 
 class Weapon:
@@ -46,6 +51,16 @@ class Enemy:
 
     def __repr__(self) -> str:
         return f"Enemy('{self.name}', hp={self.health}, str={self.strength})"
+    
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Enemy):
+            return NotImplemented
+        return self.name == other.name
+    
+    def __lt__(self, other) -> bool:
+        if not isinstance(other, Enemy):
+            return NotImplemented
+        return self.strength < other.strength
 
 
 class Inventory:
@@ -71,6 +86,24 @@ class Inventory:
     def __iter__(self):
         for item in self._items:
             yield item
+
+    def iter_valuable(self, min_value: int):
+        for item in self._items:
+            if item.value >= min_value:
+                yield item
+
+    def __contains__(self, search) -> bool:
+        if isinstance(search, str):
+            for item in self._items:
+                if item.name == search:
+                    return True
+            return False
+        elif isinstance(search, Item):
+            return search in self._items
+        return False
+        
+
+
 
 
 
