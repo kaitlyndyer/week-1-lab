@@ -200,7 +200,7 @@ class TestTakeDamage:
 
     def test_take_damage_returns_message_alive(self, mario):
         result = mario.take_damage()
-        assert result == "Mario was hit! 2 lives remaining"
+        assert result == "Mario was hit! 2 lives remaining!"
 
     def test_take_damage_returns_message_dead(self, mario):
         mario.lives = 1
