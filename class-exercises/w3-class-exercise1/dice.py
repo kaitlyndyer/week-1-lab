@@ -13,11 +13,14 @@ class Dice:
         return self.last_roll
 
     def __str__(self) -> str:
-        return "Not rolled yet" if self.last_roll == None else f'Last roll: {self.last_roll}'
-    
-    def __repr__(self) -> str:
-        return f'Dice(sides={self.sides})(last_roll={self.last_roll})'
+        return (
+            "Not rolled yet"
+            if self.last_roll == None
+            else f"Last roll: {self.last_roll}"
+        )
 
+    def __repr__(self) -> str:
+        return f"Dice(sides={self.sides})(last_roll={self.last_roll})"
 
 
 dice = Dice()

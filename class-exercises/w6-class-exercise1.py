@@ -2,6 +2,7 @@
 # starter coe
 from abc import ABC, abstractmethod
 
+
 class Song:
     def __init__(self, title: str, artist: str):
         self.title = title
@@ -9,7 +10,7 @@ class Song:
 
     def __str__(self) -> str:
         return f'"{self.title}" by {self.artist}'
-    
+
 
 class PlaylistObserver(ABC):
     """abstract base class for anything that wants to observe a playlist"""
@@ -19,8 +20,10 @@ class PlaylistObserver(ABC):
         """notify the observer when a song is added to the playlist"""
         pass
 
+
 class ObservablePlaylist:
     """a playlist that notifies observers when songs are added"""
+
     def __init__(self, name: str):
         self.name = name
         self._songs: list[Song] = []
@@ -35,17 +38,21 @@ class ObservablePlaylist:
     def _notify_all(self, song: Song) -> None:
         for observer in self._observers:
             observer.notify(self.name, song)
-    
+
     def add_song(self, song: Song) -> None:
         self._songs.append(song)
         self._notify_all(song)
+
 
 class User(PlaylistObserver):
     def __init__(self, name: str):
         self.name = name
 
     def notify(self, playlist_name: str, song: Song) -> None:
-        print(f'[{self.name}] "{song.title}" by {song.artist} was added to {playlist_name}')
+        print(
+            f'[{self.name}] "{song.title}" by {song.artist} was added to {playlist_name}'
+        )
+
 
 playlist = ObservablePlaylist("Road Trip Vibes")
 

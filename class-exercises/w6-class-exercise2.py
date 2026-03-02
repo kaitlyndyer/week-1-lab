@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 import random
 
+
 class Song:
     def __init__(self, title: str, artist: str, rating: float):
         self.title = title
@@ -10,8 +11,8 @@ class Song:
         self.rating = rating
 
     def __repr__(self):
-        return f'{self.title} - {self.artist} (rating: {self.rating})'
-    
+        return f"{self.title} - {self.artist} (rating: {self.rating})"
+
 
 class SortStrategy(ABC):
     @abstractmethod
@@ -22,12 +23,13 @@ class SortStrategy(ABC):
 class SortByTitle(SortStrategy):
     def sort(self, songs: list[Song]) -> list[Song]:
         return sorted(songs, key=lambda s: s.title)
-    
+
 
 class SortByRating(SortStrategy):
     def sort(self, songs: list[Song]) -> list[Song]:
         return sorted(songs, key=lambda s: s.rating, reverse=True)
-    
+
+
 class ShuffleSort(SortStrategy):
     def sort(self, songs: list[Song]) -> list[Song]:
         shuffled = songs[:]
@@ -36,7 +38,7 @@ class ShuffleSort(SortStrategy):
 
 
 class Playlist:
-    def __init__(self, name:str, strategy: SortStrategy):
+    def __init__(self, name: str, strategy: SortStrategy):
         self.name = name
         self.strategy = strategy
         self.songs: list[Song] = []
@@ -48,11 +50,9 @@ class Playlist:
         self.songs = self.strategy.sort(self.songs)
 
     def display(self) -> None:
-        print(f'Playlist: {self.name}')
+        print(f"Playlist: {self.name}")
         for i, song in enumerate(self.songs, 1):
-            print(f'    {i}. {song}')
-
-
+            print(f"    {i}. {song}")
 
 
 playlist = Playlist("Island Tunes", SortByTitle())
@@ -65,7 +65,7 @@ playlist.add(Song("K.K. Disco", "K.K. Slider", 3.8))
 
 # Sort and display the playlist
 playlist.sort()
-playlist.display() 
+playlist.display()
 
 # Change sort strategy to SortByRating
 playlist.strategy = SortByRating()
