@@ -88,7 +88,11 @@ class BinarySearchTree:
         # Hint: look at _traverse above,  your solution has almost exactly
         # the same structure. Instead of printing each value, append it
         # to the result list.
-        pass
+        if not node:
+            return
+        self._to_list(node.left_child, result)
+        result.append(node.value)
+        self._to_list(node.right_child, result)
 
     def range_query(self, lower, upper):
         """
@@ -118,4 +122,13 @@ class BinarySearchTree:
         #   - If the current node's value is greater than upper, there is
         #     no point recursing right, everything there is even larger
         #     and cannot be in range.
-        pass
+        if not node:
+            return
+        if node.value > lower:
+            self._range_query(node.left_child, lower, upper, results)
+        if lower <= node.value <= upper:
+            results.append(node.value)
+        if node.value < upper:
+            self._range_query(node.right_child, lower, upper, results)
+
+

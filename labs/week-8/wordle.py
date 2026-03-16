@@ -62,6 +62,11 @@ def play(bst):
     # and max_guess. Print the result in the following format:
     #   "Your guesses ranged from {min_guess} to {max_guess}: X words apart."
     # If min_guess == max_guess, print "You got it in one guess!" instead.
+    if min_guess == max_guess:
+        print("You got it in one guess!")
+    else:
+        words_in_range = bst.range_query(min_guess, max_guess)
+        print(f"Your guesses ranged from {min_guess} to {max_guess}: {len(words_in_range)} words apart.")
 
 
 def pick_secret(bst):
