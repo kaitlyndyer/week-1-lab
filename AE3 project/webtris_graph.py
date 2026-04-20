@@ -530,11 +530,10 @@ def average_speed(sensor_list):
             speeds.append(sensor["average_mph"])
 
     # return the average speed
-    average = sum(speeds) / len(speeds)
-    return average * 60
+    return sum(speeds) / len(speeds)
 
 def travel_time(distance, speed):
-    time = distance / speed 
+    time = (distance / speed) * 60
     return round(time, 1)
 
 
@@ -574,18 +573,152 @@ connect(j13, heathrow, time_a30)
 # Find the path with the fewest nodes (fewest junctions/stops)
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
+def bfs(start, end):
+    # queue of the stations to visit
+    queue = deque([start])
+
+    # keeping track of the visited stations and adding the starting station
+    visited = {start}
+
+    # we store how we reach each station in a dictionary
+    previous = {}
+
+    while queue:
+        # get the first station
+        current = queue.popleft()
+
+        # if we reach the ending station stop
+        if current == end:
+            break
+
+        # check neighbours of the station
+        for neighbour in current.connections:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                previous[neighbour] = current # this is to remember the path we take
+                queue.append(neighbour)
+    path = []
+    current = end
+
+    while current is not None:
+        path.append(current)
+        current = previous.get(current)
+    
+    path.reverse()
+
+    # calculate the total travel time
+    total_travel_time = 0
+
+    current = start
+    for station in path[1:]:
+        total_travel_time += current.connections[station]
+        current = station
+
+    print(f'Route: {' - '.join([station.name for station in path])}')
+    print(f'Total Travel Time: {total_travel_time} minutes')
+
+bfs(j7, heathrow)
 
 
 # Depth-First Search (DFS)
 # Find a valid path (not necessarily optimal). Discuss how the path found depends on the order in which the neighours are explored
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
+def dfs(start, end, visited=None, previous=None):
+    if visited is None:
+        visited = set()
+    if previous is None:
+        previous = {}
+
+    visited.add(start)
+
+    if start == end:
+        return previous
+    
+    for neighbour in start.connections:
+        if neighbour not in visited:
+            previous[neighbour] = start
+            result = dfs(neighbour, end, visited, previous)
+
+            if result is not None:
+                return result
+    return None
+
+def dfs_route(start, end):
+    previous = dfs(start, end)
+
+    path = []
+    current = end
+
+    while current is not None:
+        path.append(current)
+        current = previous.get(current)
+
+    path.reverse()
+
+    total_travel_time = 0
+    current = start
+
+    for station in path[1:]:
+        total_travel_time += current.connections[station]
+        current = station
+    
+    print(f'Route: {' - '.join([station.name for station in path])}')
+    print(f'Total Travel Time: {total_travel_time} minutes')
+
+
+dfs_route(j7, heathrow)
 
 
 # Dijkstra's Algorithm
 # Find the path with the minimum total weight (shortest distance or fastest time depending on my weighing system, so by fastest time)
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
+def dijkstra(start):
+    # we create a dictionary to store the cheapest times from the starting station to each station
+    shortest_times = {start: 0}
+    previous = {}
+    visited = set()
+    pq = [(0, start)]
+
+    while pq:
+        current_time, current = heapq.heappop(pq)
+
+        if current in visited:
+            continue
+        visited.add(current)
+        
+        for neighbour, time in current.connections.items():
+            if neighbour in visited:
+                continue
+
+            new_time = current_time + time
+
+            if neighbour not in shortest_times or new_time < shortest_times[neighbour]:
+                shortest_times[neighbour] = new_time
+                previous[neighbour] = current
+                heapq.heappush(pq, (new_time, neighbour))
+    return shortest_times, previous
+
+# function to print the shortest route
+def shortest_route(start, end):
+    shortest_times, previous = dijkstra(start)
+
+    path = []
+    current = end
+
+    while current is not None:
+        path.append(current)
+        current = previous.get(current)
+
+    path.reverse()
+
+    total_time = shortest_times.get(end)
+
+    print(f'Route: {' - '.join([station.name for station in path])}')
+    print(f'Total Travel Time: {total_time} minutes')
+
+shortest_route(j7, heathrow)
 
 
 
