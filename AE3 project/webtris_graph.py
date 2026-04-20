@@ -488,11 +488,11 @@ class Station:
         self.connections = {}
 
     def __eq__(self, other):
-        # this is needed so that the stations can be compared
+        # this is needed so that the Stations can be compared
         return isinstance(other, Station) and self.name == other.name
     
     def __hash__(self):
-        # here we add this so that the stations can be used as dictionary keys
+        # here we add this so that the stations can be used in sets and dictionaries
         return hash(self.name)
     
     def __lt__(self, other):
@@ -513,7 +513,7 @@ def connect(station_a, station_b, time):
     station_b.add_connection(station_a, time)
 
 
-# Creating stations
+# Creating stations (the nodes of the graph)
 j7 = Station("Junction 7")
 j12 = Station("Junction 12")
 j13 = Station("Junction 13")
@@ -532,13 +532,14 @@ def average_speed(sensor_list):
     # return the average speed
     return sum(speeds) / len(speeds)
 
+# here we calculate the travel time and convert the hours to minutes and round the output to make ti cleaner and easier to use
 def travel_time(distance, speed):
     time = (distance / speed) * 60
     return round(time, 1)
 
 
 # EDGE WIGHTS
-# get the average speeds
+# get the average speeds for each connection
 speed_7_12 = average_speed(data["7-12"])
 speed_12_13 = average_speed(data["12-13"])
 speed_13_14 = average_speed(data["13-14"])
@@ -551,7 +552,7 @@ time_12_13 = travel_time(3, speed_12_13)
 time_13_14 = travel_time(3, speed_13_14)
 time_14_h = travel_time(3, speed_14_h)
 time_a30 = travel_time(3.8, speed_a30)
-time_route_b = 20
+time_route_b = 20 # the given time
 
 # Creating the weighted graph
 # main route
@@ -574,6 +575,7 @@ connect(j13, heathrow, time_a30)
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
 def bfs(start, end):
+    """This figures out the path using a BFS algorithm"""
     # queue of the stations to visit
     queue = deque([start])
 
@@ -594,9 +596,17 @@ def bfs(start, end):
         # check neighbours of the station
         for neighbour in current.connections:
             if neighbour not in visited:
-                visited.add(neighbour)
+                visited.add(neighbour) # we mark the station as visited
                 previous[neighbour] = current # this is to remember the path we take
-                queue.append(neighbour)
+                queue.append(neighbour) # and then add it to the queue
+    # we return the previous dictionary so that the route function can use it to print the needed information
+    return previous
+
+def bfs_route(start, end):
+    """This recreates the path, calculates the travel time, and prints the results"""
+    previous = bfs(start, end)
+
+    # here we recreate the path we took
     path = []
     current = end
 
@@ -604,20 +614,23 @@ def bfs(start, end):
         path.append(current)
         current = previous.get(current)
     
-    path.reverse()
+    path.reverse() # we reverse it to put it in the correct order
 
     # calculate the total travel time
     total_travel_time = 0
 
     current = start
+    # here we skip the first node because there is not edge weight to itself so we use the index 1:
     for station in path[1:]:
         total_travel_time += current.connections[station]
         current = station
 
+    # print the results
     print(f'Route: {' - '.join([station.name for station in path])}')
     print(f'Total Travel Time: {total_travel_time} minutes')
 
-bfs(j7, heathrow)
+# Here we run the BFS
+bfs_route(j7, heathrow)
 
 
 # Depth-First Search (DFS)
@@ -625,28 +638,38 @@ bfs(j7, heathrow)
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
 def dfs(start, end, visited=None, previous=None):
+    """This algorithm uses a DFS logic to find a valid path"""
     if visited is None:
         visited = set()
     if previous is None:
         previous = {}
 
+    # here we mark the starting station as visited
     visited.add(start)
 
+    # this is a base case for if we reach the ending station
     if start == end:
         return previous
     
+    # here we explore the neighbouring sattions by depth-first search
     for neighbour in start.connections:
         if neighbour not in visited:
             previous[neighbour] = start
+            
+            # here we recursivly call the dfs searching function to go deeper into the graph
             result = dfs(neighbour, end, visited, previous)
 
+            # if a path is found we return it
             if result is not None:
                 return result
+    # this is for if no path is found
     return None
 
 def dfs_route(start, end):
+    """This recreates the path, calculates the total travel time and prints the information"""
     previous = dfs(start, end)
 
+    # here just like bfs we reconstruct the path
     path = []
     current = end
 
@@ -656,9 +679,11 @@ def dfs_route(start, end):
 
     path.reverse()
 
+    # This computes the total weight which is the total travel time
     total_travel_time = 0
     current = start
 
+    # similarly to bfs we skip the first station because it doesn't have an edge weight to itself
     for station in path[1:]:
         total_travel_time += current.connections[station]
         current = station
@@ -675,25 +700,34 @@ dfs_route(j7, heathrow)
 # - return the sequence of nodes in the path
 # - return the total cost/weight of the path
 def dijkstra(start):
+    """This uses the dijkstra's algorithm to find the optimal path with minimum total weight (the fastest time)"""
     # we create a dictionary to store the cheapest times from the starting station to each station
     shortest_times = {start: 0}
+    # this stores the path
     previous = {}
+    # here we create a set for the visited nodes
     visited = set()
+    # this is the priority queue that stores the cost and the node
     pq = [(0, start)]
 
     while pq:
+        # we get the node with the smallest cost
         current_time, current = heapq.heappop(pq)
 
+        # then we skip if the node has already be visited
         if current in visited:
             continue
         visited.add(current)
         
+        # here we chech all of the surrounding neighbours of the station
         for neighbour, time in current.connections.items():
             if neighbour in visited:
                 continue
 
+            # this calculates the new time
             new_time = current_time + time
 
+            # and here we update it if a better path is found
             if neighbour not in shortest_times or new_time < shortest_times[neighbour]:
                 shortest_times[neighbour] = new_time
                 previous[neighbour] = current
@@ -702,8 +736,10 @@ def dijkstra(start):
 
 # function to print the shortest route
 def shortest_route(start, end):
+    """This function is used to recreate and print the results"""
     shortest_times, previous = dijkstra(start)
 
+    # using the same ideas a before we recreate the path taken
     path = []
     current = end
 
@@ -713,19 +749,10 @@ def shortest_route(start, end):
 
     path.reverse()
 
-    total_time = shortest_times.get(end)
+    # this is to get the total travel time
+    total_travel_time = shortest_times.get(end)
 
     print(f'Route: {' - '.join([station.name for station in path])}')
-    print(f'Total Travel Time: {total_time} minutes')
+    print(f'Total Travel Time: {total_travel_time} minutes')
 
 shortest_route(j7, heathrow)
-
-
-
-
-
-
-
-
-    
-
